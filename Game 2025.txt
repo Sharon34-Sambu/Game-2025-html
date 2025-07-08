@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>UHURU GAME: Choose Your Political Path</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .game-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .choice-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: left;
+        }
+        .corrupt-choice {
+            background-color: #f44336;
+        }
+        .hero-choice {
+            background-color: #2196F3;
+        }
+        #character-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto;
+            display: block;
+        }
+        .ending {
+            text-align: center;
+            display: none;
+        }
+        #hyena-ending {
+            color: #f44336;
+        }
+        #tree-ending {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>UHURU GAME</h1>
+        <h2 id="scenario-title">Be Ruto for 24 Hours</h2>
+        
+        <img id="character-image" src="politician.jpg" alt="Your Character">
+        
+        <div id="scenario-text">
+            <p>You wake up as the President of Kenya. The country is facing economic challenges and your advisors are presenting different options.</p>
+        </div>
+        
+        <div id="choices">
+            <button class="choice-btn corrupt-choice" onclick="makeChoice(1)">Divert 500M KSH from education funds to buy luxury vehicles for cabinet</button>
+            <button class="choice-btn hero-choice" onclick="makeChoice(2)">Cut government spending and redirect funds to healthcare infrastructure</button>
+            <button class="choice-btn" onclick="makeChoice(3)">Form a committee to study the issue (delays action but looks good)</button>
+        </div>
+        
+        <div id="hyena-ending" class="ending">
+            <h2>GAME OVER: You Became a Hyena</h2>
+            <img src="hyena.png" width="200">
+            <p>Your corrupt choices have transformed you into a scavenger, feeding off the people's suffering.</p>
+            <button onclick="restartGame()">Play Again</button>
+        </div>
+        
+        <div id="tree-ending" class="ending">
+            <h2>VICTORY: You Became a Mugumo Tree</h2>
+            <img src="tree.png" width="200">
+            <p>Your selfless leadership has made you a symbol of strength and legacy that will shelter generations.</p>
+            <button onclick="restartGame()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        let corruptionPoints = 0;
+        let integrityPoints = 0;
+        
+        function makeChoice(choiceId) {
+            // Update points based on choice
+            if (choiceId === 1) {
+                corruptionPoints += 2;
+                nextScenario("You diverted funds for personal gain. The media is starting to ask questions...");
+            } else if (choiceId === 2) {
+                integrityPoints += 2;
+                nextScenario("Your healthcare initiative is popular, but business interests are unhappy...");
+            } else {
+                corruptionPoints += 1;
+                integrityPoints += 1;
+                nextScenario("The committee has bought you time, but problems are growing...");
+            }
+            
+            // Check for endings
+            if (corruptionPoints >= 5) {
+                showEnding('hyena');
+            } else if (integrityPoints >= 5) {
+                showEnding('tree');
+            }
+        }
+        
+        function nextScenario(newText) {
+            document.getElementById('scenario-text').innerHTML = `<p>${newText}</p>`;
+            // In a full game, you would load a new scenario here
+        }
+        
+        function showEnding(endingType) {
+            document.getElementById('choices').style.display = 'none';
+            document.getElementById(`${endingType}-ending`).style.display = 'block';
+        }
+        
+        function restartGame() {
+            corruptionPoints = 0;
+            integrityPoints = 0;
+            document.getElementById('choices').style.display = 'block';
+            document.getElementById('hyena-ending').style.display = 'none';
+            document.getElementById('tree-ending').style.display = 'none';
+            document.getElementById('scenario-text').innerHTML = 
+                '<p>You wake up as the President of Kenya. The country is facing economic challenges and your advisors are presenting different options.</p>';
+        }
+    </script>
+</body>
+</html>
